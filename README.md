@@ -1,1 +1,0 @@
-# ISP-django-website
