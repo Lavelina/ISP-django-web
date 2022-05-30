@@ -15,9 +15,29 @@
     <ul>
         <a href="{% url 'home' %}"><li>Home</li></a>
         <a href="{% url 'about' %}"><li>About</li></a>
-        <a href=""><li>Contacts</li></a>
-        <a href=""><li>Regitration</li></a>
+        <a href="{% url 'add_page' %}"><li>Add an article</li></a>
+        <a href="{% url 'contacts' %}"><li>Contacts</li></a>
+        <a href="{% url 'login' %}"><li>Sign In</li></a>
     </ul>
+
+
+	<ul id="leftchapters">
+{% if sect_selected == 0 %}
+		<li class="selected">All categories</li>
+{% else %}
+		<li><a href="{% url 'home' %}">All categories</a></li>
+{% endif %}
+
+{% for s in sects %}
+{% if s.pk == sect_selected %}
+		<li class="selected">{{s.name}}</li>
+	{% else %}
+		<li><a href="{{ s.get_absolute_url }}">{{s.name}}</a></li>
+	{% endif %}
+{% endfor %}
+
+	</ul>
+
 </aside>
 <main>
 {% block content %}
