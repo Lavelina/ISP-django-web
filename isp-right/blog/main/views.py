@@ -1,15 +1,17 @@
+import logging
 from django.contrib.auth import logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, Http404
 from django.shortcuts import *
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .form import *
 from .models import *
 from .utils import *
+
+logger = logging.getLogger(__name__)
 
 
 class Home(DataMixin, ListView):
@@ -27,10 +29,6 @@ class Home(DataMixin, ListView):
         return Post.objects.filter(status=True)
 
 
-def about(request):
-    return render(request, 'main/about.html', {'title': 'About us'})
-
-
 class Add(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'main/addpost.html'
@@ -43,6 +41,27 @@ class Add(LoginRequiredMixin, DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
+class DeletePost(DeleteView):
+    model = Post
+    template_name = 'main/del-post.html'
+    slug_url_kwarg = 'post_slug'
+    success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class UpdatePost(DataMixin, UpdateView):
+    model = Post
+    template_name = 'main/update.html'
+    slug_url_kwarg = 'post_slug'
+    success_url = reverse_lazy('home')
+    form_class = UpdateForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=" Редактирование поста")
+        return dict(list(context.items()) + list(c_def.items()))
 
 class ShowPost(DataMixin, DetailView):
     model = Post

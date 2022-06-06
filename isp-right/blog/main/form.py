@@ -25,6 +25,21 @@ class AddPostForm(forms.ModelForm):
         return title
 
 
+class UpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    image = forms.FileInput()
+
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'body', 'photo', 'status', 'sect']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-input'}),
+            'body': forms.Textarea(attrs={'cols': 60, 'rows': 10}),
+        }
+
+
 class RegisterForm(UserCreationForm):
     username = forms.CharField(label='логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     email = forms.EmailField(label='email', widget=forms.EmailInput(attrs={'class': 'form-input'}))
