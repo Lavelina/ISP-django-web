@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dj_db',
-        'USER': 'ave',
+        'NAME': 'root_db',
+        'USER': 'lavelina',
         'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -131,3 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/'
