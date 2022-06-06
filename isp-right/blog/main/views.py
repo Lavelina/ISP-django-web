@@ -1,7 +1,6 @@
 import logging
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, Http404
 from django.shortcuts import *
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView

@@ -1,4 +1,12 @@
+import asyncio
+
+from asgiref.sync import sync_to_async
 from main.models import *
+
+
+@sync_to_async
+def get_all_sections():
+    return Section.objects.all()
 
 
 class DataMixin:
@@ -6,7 +14,7 @@ class DataMixin:
 
     def get_user_context(self, **kwargs):
         context = kwargs
-        section = Section.objects.all()
+        section = asyncio.run(get_all_sections())
         context['section'] = section
         if 'sect_selected' not in context:
             context['sect_seslected'] = 0
